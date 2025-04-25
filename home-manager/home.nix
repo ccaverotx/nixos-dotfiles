@@ -18,6 +18,7 @@
     firefox # Ejemplo
     htop    # Ejemplo
     kdePackages.kate
+    zoom-us
     # Añade más paquetes aquí
   ];
 

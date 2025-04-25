@@ -30,6 +30,27 @@
     userEmail = "ccaverotx@gmail.com";
   };
 
+  # --- AÑADIDO: Configuración de Plasma Manager ---
+  plasma = {
+    # Aquí es donde usarás las opciones documentadas en
+    # https://github.com/nix-community/plasma-manager
+
+    # Puedes empezar vacío o con algo simple:
+    enable = true; # Algunos módulos de HM requieren un enable explícito
+
+    # Ejemplo MUY básico (revisar opciones exactas en la documentación):
+    # workspace = {
+    #   theme = "Breeze Dark"; # Nombre interno del Look & Feel global
+    #   colorScheme = "Breeze Dark";
+    #   iconTheme = "breeze-dark";
+    # };
+
+    # Ejemplo usando el módulo 'files' para kdeglobals (más bajo nivel)
+    # files."kdeglobals"."Icons"."Theme".value = "breeze-dark";
+
+  };
+  # --- FIN AÑADIDO ---
+
   # Aquí añadirás más configuraciones de Home Manager más adelante...
   # (dotfiles, variables de entorno, otros programas, etc.)
 

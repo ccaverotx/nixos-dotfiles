@@ -17,6 +17,7 @@
   home.packages = with pkgs; [
     firefox # Ejemplo
     htop    # Ejemplo
+    kdePackages.kate
     # Añade más paquetes aquí
   ];
 
@@ -24,8 +25,8 @@
   # Ejemplo: configurar Git
   programs.git = {
     enable = true;
-    userName = "Tu Nombre"; # ¡Cambia esto!
-    userEmail = "tu_email@example.com"; # ¡Cambia esto!
+    userName = "ccaverotx"; # ¡Cambia esto!
+    userEmail = "ccaverotx@gmail.com";
   };
 
   # Aquí añadirás más configuraciones de Home Manager más adelante...

@@ -31,7 +31,7 @@
   };
 
   # --- AÑADIDO: Configuración de Plasma Manager ---
-  plasma = {
+  programs.plasma = {
     # Aquí es donde usarás las opciones documentadas en
     # https://github.com/nix-community/plasma-manager
 

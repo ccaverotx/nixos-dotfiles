@@ -29,7 +29,7 @@
       myUsername = "ccaverotx";
       myHostname = "nixos";
       # Importa configuration.nix (asumiendo que está en la raíz)
-      nixosConfigModule = import ./configuration.nix;
+      nixosConfigModule = import ./nixos/configuration.nix;
     in {
       nixosConfigurations = {
         ${myHostname} = lib.nixosSystem {
@@ -51,10 +51,10 @@
                 # --- Lista de Imports para Home Manager ---
                 imports = [
                   # a) Tu archivo home.nix (desde la raíz)
-                  ./home.nix
+                  ./home-manager/home.nix
 
                   # b) El módulo de plasma-manager (¡AQUÍ DENTRO!)
-                  inputs.plasma-manager.homeManagerModules.default
+                  inputs.plasma-manager.homeManagerModules.plasma-manager
                   # (Si 'default' diera error más tarde, probaríamos '.plasma-manager')
                 ];
                 # --- Fin Imports de HM ---

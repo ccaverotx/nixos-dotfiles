@@ -2,6 +2,11 @@
 { config, pkgs, inputs, lib, myUsername, ... }:
 
 {
+  imports = [
+    ./plasma-manager.nix # Ruta relativa al archivo que acabamos de crear
+  # Puedes añadir más archivos .nix aquí si creas más módulos
+  # ej. ./terminal.nix, ./editors.nix
+  ];
   # ¡Importante! Establece la versión de estado.
   # Usa la versión estable sobre la que basas tu configuración
   # o la última estable si usas unstable. Ej: "24.05" o "23.11"
@@ -29,27 +34,6 @@
     userName = "ccaverotx"; # ¡Cambia esto!
     userEmail = "ccaverotx@gmail.com";
   };
-
-  # --- AÑADIDO: Configuración de Plasma Manager ---
-  programs.plasma = {
-    # Aquí es donde usarás las opciones documentadas en
-    # https://github.com/nix-community/plasma-manager
-
-    # Puedes empezar vacío o con algo simple:
-    enable = true; # Algunos módulos de HM requieren un enable explícito
-
-    # Ejemplo MUY básico (revisar opciones exactas en la documentación):
-    # workspace = {
-    #   theme = "Breeze Dark"; # Nombre interno del Look & Feel global
-    #   colorScheme = "Breeze Dark";
-    #   iconTheme = "breeze-dark";
-    # };
-
-    # Ejemplo usando el módulo 'files' para kdeglobals (más bajo nivel)
-    # files."kdeglobals"."Icons"."Theme".value = "breeze-dark";
-
-  };
-  # --- FIN AÑADIDO ---
 
   # Aquí añadirás más configuraciones de Home Manager más adelante...
   # (dotfiles, variables de entorno, otros programas, etc.)

@@ -1,23 +1,48 @@
-{ config, pkgs, ... }:
+# ~/nixos-config/configuration.nix (o nixos/configuration.nix)
+{ config, pkgs, lib, ... }: # Añadimos lib por si acaso
 
-{
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+# --- AÑADIDO: Bloque let para generar weston.ini ---
+let
+  westonIniContent = ''
+    [core]
+    # idle-time=0 # opcional
+
+    # Configuración del monitor principal
+    [output]
+    name=DP-1
+    mode=1920x1080@180
+    transform=normal
+    position=0,0
+
+    # Configuración del monitor secundario
+    [output]
+    name=DP-2
+    mode=1920x1080
+    transform=270
+    position=1920,0
+
+    [shell]
+    background-color=0xff002244 # Color sólido: Azul oscuro
+  '';
+
+  generatedWestonIni = pkgs.writeText "weston.ini" westonIniContent;
+in
+{ # Inicio de la configuración principal
+  imports = [
+  ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/nvme0n1";
   boot.loader.grub.useOSProber = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "nixos";
   networking.networkmanager.enable = true;
 
   time.timeZone = "America/La_Paz";
 
   i18n.defaultLocale = "en_US.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "es_BO.UTF-8";
     LC_IDENTIFICATION = "es_BO.UTF-8";
@@ -30,27 +55,45 @@
     LC_TIME = "es_BO.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  services.xserver.enable = true; # Necesario para la sesión Plasma X11 si la usas
 
-  # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
+  # --- MODIFICADO: Configuración SDDM para usar Weston ---
+  services.displayManager.sddm = {
+    enable = true;             # Habilitar SDDM
+    wayland.enable = true;     # Habilitar el modo Wayland para el greeter SDDM
+    wayland.compositor = "weston"; # Usar Weston como compositor para el greeter
+
+    settings = {
+      # Sección [Wayland] en la configuración de SDDM
+      Wayland = {
+        # Comando para lanzar Weston:
+        # - Usa la ruta del paquete Nix (${pkgs.weston}/bin/weston)
+        # - Usa el modo kiosk (pantalla completa simple)
+        # - Le pasa nuestro archivo weston.ini generado (${generatedWestonIni})
+        CompositorCommand = "${pkgs.weston}/bin/weston --shell=kiosk -c ${generatedWestonIni}";
+      };
+    };
+    # Asegúrate de que no haya un setupScript definido de intentos anteriores
+    # setupScript = "";
+  };
+  # --- FIN MODIFICADO ---
+
+  # Habilitar el escritorio Plasma 6
   services.desktopManager.plasma6.enable = true;
 
-  # Configure keymap in X11
+  # Configuración de teclado X11
   services.xserver.xkb = {
     layout = "us";
     variant = "alt-intl";
   };
 
-  # Configure console keymap
+  # Configuración de teclado en consola TTY
   console.keyMap = "dvorak";
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
+  services.printing.enable = true; # Impresión
 
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
+  # Configuración de sonido Pipewire
+  services.pulseaudio.enable = false; # Deshabilitar pulseaudio explícitamente
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -59,37 +102,33 @@
     pulse.enable = true;
   };
 
-  # Enable touchpad support
-  # services.xserver.libinput.enable = true;
+  # Flakes (Redundante si se gestiona desde fuera del flake)
+  # nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # Enable Flakes and nix-command
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  # Define a user account
+  # Cuenta de usuario
   users.users.ccaverotx = {
     isNormalUser = true;
     description = "Carlos Cavero";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      # kdePackages.kate
-      # thunderbird
-    ];
+    packages = with pkgs; [ ]; # Paquetes específicos para el usuario a nivel sistema (vacío ahora)
   };
 
-  # Allow unfree packages
+  # Permitir paquetes no libres
   nixpkgs.config.allowUnfree = true;
 
+  # --- MODIFICADO: Paquetes del sistema ---
   environment.systemPackages = with pkgs; [
     git
     unrar
-    # wget
+    weston # <-- Añadido Weston
+    # Ya no necesitamos kscreen aquí
   ];
+  # --- FIN MODIFICADO ---
 
-  # SSH, firewall, y otros servicios (comentados por ahora)
+  # SSH / Firewall (comentados)
   # services.openssh.enable = true;
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
   # networking.firewall.enable = false;
 
+  # Versión del estado del sistema
   system.stateVersion = "24.11";
 }

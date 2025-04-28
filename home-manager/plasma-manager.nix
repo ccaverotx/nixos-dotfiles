@@ -13,11 +13,12 @@
     # Ejemplos básicos (descomenta y adapta):
 
     # -- Apariencia General --
-    # lookandfeel = "org.kde.breezedark.desktop"; # Nombre interno del Look and Feel global
-    # theme = "Breeze Dark"; # Tema de estilo de aplicaciones
-    # iconTheme = "breeze-dark";
-    # colorScheme = "BreezeDark";
-    # cursorTheme = "breeze_cursors";
+    workspace = {
+      # clickItemTo = "open"; # If you liked the click-to-open default from plasma 5
+      lookAndFeel = "org.kde.breezedark.desktop";
+      #iconTheme = "Papirus-Dark";
+      #wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Patak/contents/images/1080x1920.png";
+    };
     # ksplash.theme = "None"; # Deshabilitar splash screen
 
     # -- Fondos y Escritorio --

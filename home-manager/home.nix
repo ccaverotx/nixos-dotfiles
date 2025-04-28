@@ -24,6 +24,11 @@
     htop    # Ejemplo
     kdePackages.kate
     zoom-us
+    obsidian
+    nodejs
+    insomnia
+    onlyoffice-bin
+    nodePackages.live-server		
     # Añade más paquetes aquí
   ];
 

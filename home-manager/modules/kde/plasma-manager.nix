@@ -1,57 +1,29 @@
-# ~/nixos-config/home-manager/plasma.nix
-{ config, pkgs, lib, inputs, myUsername, ... }: # Recibe los mismos args que home.nix
+# ~/nixos-config/home-manager/modules/plasma.nix
+# Módulo principal para la configuración de Plasma. Importa submódulos.
+{ config, pkgs, lib, ... }:
 
 {
-  # --- Configuración de Plasma usando el módulo integrado de Home Manager ---
+  # Importa los módulos específicos de Plasma que has creado
+  imports = [
+    ./plasma-panel.nix  # Importa la configuración de paneles y widgets
+    # ./plasma-theme.nix  # Podrías crear uno para temas/workspace
+    # ./plasma-shortcuts.nix # Podrías crear uno para atajos
+  ];
+
+  # Aquí pones la configuración general de 'programs.plasma'
   programs.plasma = {
-    enable = true; # Habilita la gestión declarativa de Plasma
+    # Habilita el módulo principal de plasma-manager (proporcionado por su import en flake.nix)
+    enable = true;
 
-    # --- AQUÍ ES DONDE AÑADIRÁS TODA TU CONFIGURACIÓN DE PLASMA ---
-    # Consulta las opciones en:
-    # https://nix-community.github.io/home-manager/options.html#opt-programs.plasma.enable
-
-    # Ejemplos básicos (descomenta y adapta):
-
-    # -- Apariencia General --
+    # Ejemplo: Configuración de workspace (Apariencia General)
     workspace = {
-      # clickItemTo = "open"; # If you liked the click-to-open default from plasma 5
       lookAndFeel = "org.kde.breezedark.desktop";
-      #iconTheme = "Papirus-Dark";
-      #wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Patak/contents/images/1080x1920.png";
+      colorScheme = "Breeze Dark";
     };
-    # ksplash.theme = "None"; # Deshabilitar splash screen
 
-    # -- Fondos y Escritorio --
-    # workspace.wallpaper.image = "/ruta/absoluta/a/tu/fondo.jpg"; # O usa paquetes: "${pkgs.plasma5Packages.plasma-wallpaper-dynamic}/share/wallpapers/Dynamic"
-    # workspace.wallpaper.sourceDir = "~/Imágenes/Fondos"; # Directorio para fondos de pantalla de presentación
-    # workspace.containments.desktop.appletsrc.Configuration.General.positions = "..."; # Config avanzada de iconos/widgets
+    # La configuración de 'panels' viene del import de ./plasma-panel.nix
+    # La configuración de 'kwin' viene del import de ./kwin.nix (hecho en home.nix)
+    # La configuración de 'shortcuts' podría venir de ./plasma-shortcuts.nix
 
-    # -- Atajos (KGlobalAccel) --
-    # shortcuts = {
-    #   "KWin" = {
-    #     "Switch to Desktop 1" = "Meta+1";
-    #     "Switch to Desktop 2" = "Meta+2";
-    #   };
-    #   "plasmashell" = {
-    #     "activate task manager entry 1" = "Meta+Z";
-    #   };
-    # };
-
-    # -- KWin (Gestor de ventanas) --
-    # kwin.virtualDesktops.number = 4;
-    # kwin.virtualDesktops.rows = 1;
-    # kwin.effect.screenedge.bottom = "DesktopGrid";
-
-    # ... y muchas otras opciones para paneles, krunner, etc. ...
-
-  }; # Fin de programs.plasma
-
-  # También puedes configurar apps específicas de KDE aquí si quieres,
-  # aunque podrías ponerlas en otros módulos (ej. konsole.nix)
-  # programs.konsole = {
-  #   enable = true;
-  #   profiles.Default.terminalColumns = 100;
-  #   profiles.Default.terminalRows = 30;
-  # };
-
+  }; # Fin programs.plasma
 }

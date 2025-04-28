@@ -12,6 +12,11 @@
       inputs.nixpkgs.follows = "nixpkgs"; # Asegura que usen la misma base de paquetes
     };
 
+    kwin-effects-forceblur = {
+      url = "github:taj-ny/kwin-effects-forceblur";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Plasma Manager (de nix-community, rama principal para Plasma 6)
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
@@ -22,7 +27,7 @@
   };
 
   # --- OUTPUTS ---
-  outputs = { self, nixpkgs, home-manager, plasma-manager, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, kwin-effects-forceblur, plasma-manager, ... }@inputs:
     let
       system = "x86_64-linux";
       lib = nixpkgs.lib;

@@ -3,8 +3,9 @@
 
 {
   imports = [
-    ./modules/plasma-manager.nix # Ruta relativa al archivo que acabamos de crear
-    ./modules/kate.nix
+    ./modules/kde/plasma-manager.nix # Ruta relativa al archivo que acabamos de crear
+    ./modules/kde/kate.nix
+    ./modules/kde/kwin.nix
   # Puedes añadir más archivos .nix aquí si creas más módulos
   # ej. ./terminal.nix, ./editors.nix
   ];

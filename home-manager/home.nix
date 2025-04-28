@@ -1,5 +1,5 @@
 # ~/nixos-config/home.nix
-{ config, pkgs, inputs, lib, myUsername, ... }:
+{  pkgs, myUsername, ... }:
 
 {
   imports = [
@@ -30,6 +30,7 @@
     insomnia
     onlyoffice-bin
     nodePackages.live-server		
+    nil
     # Añade más paquetes aquí
   ];
 

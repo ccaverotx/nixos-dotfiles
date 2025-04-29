@@ -57,6 +57,7 @@
     obsidian
     insomnia
     onlyoffice-bin
+    vesktop
     # Añadir más paquetes aquí...
   ];
 

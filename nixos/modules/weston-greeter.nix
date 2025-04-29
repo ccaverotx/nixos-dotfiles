@@ -4,7 +4,7 @@
 # para el 'greeter' (la pantalla de login).
 # Esto ayuda a tener una configuración de pantalla (resolución, rotación, posición)
 # consistente entre el login y la sesión de usuario final en Wayland.
-{ config, pkgs, lib, ... }:
+{ pkgs, ... }:
 
 let
   # --- Contenido del archivo de configuración de Weston ---
@@ -20,21 +20,16 @@ let
     name=DP-1          # Identificador del monitor
     mode=1920x1080@180 # Resolución y tasa de refresco preferida
     transform=normal   # Orientación normal (otras: 90, 180, 270, flipped, etc.)
-    position=0,0       # Coordenada X,Y de la esquina superior izquierda
+    position=1200,0       # Coordenada X,Y de la esquina superior izquierda
 
     # Configuración del monitor secundario (Ej: DisplayPort 2)
     [output]
     name=DP-2
-    mode=1920x1080     # Resolución (tasa de refresco usualmente automática si no se especifica)
-    transform=270      # Rotado 270 grados (vertical, girado a la derecha)
-    position=1920,0    # Posicionado a la derecha del monitor principal (0,0 + 1920 ancho)
+    mode=auto    # Resolución (tasa de refresco usualmente automática si no se especifica)
+    transform=rotate-90      # Rotado 270 grados (vertical, girado a la derecha)
+    position=0,0    # Posicionado a la derecha del monitor principal (0,0 + 1920 ancho)
 
-    # --- Configuración del Shell ---
-    # Weston se lanzará con '--shell=kiosk', que es muy simple.
-    [shell]
-    background-color=0xff002244 # Color de fondo sólido (formato ARGB hex: 0xAARRGGBB)
-                                 # 0xff = opaco, 002244 = Azul oscuro
-  ''; # Fin del contenido de weston.ini
+  '';  # Fin del contenido de weston.ini
 
   # --- Generación del Archivo ---
   # Usa 'pkgs.writeText' para crear un archivo inmutable en el Nix store
